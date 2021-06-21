@@ -1,0 +1,284 @@
+{
+	"info": {
+		"_postman_id": "1e5e2156-d72f-4e93-803f-46366c9474cb",
+		"name": "Swagger Pets",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Add pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"PetId\", jsonData.id);\r",
+							"pm.environment.set(\"PetName\", jsonData.name);\r",
+							"\r",
+							"//console.log (jsonData.id);\r",
+							"\r",
+							"postman.setNextRequest('Find pet');\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Серверный заголовок присутствует\", function () { pm.response.to.have.header(\"Server\"); });\r",
+							"pm.test(\"Заголовок соединения присутствует\", function () { pm.response.to.have.header(\"Connection\"); });\r",
+							"pm.test(\"Заголовок даты присутствует\", function () { pm.response.to.have.header(\"Date\"); });\r",
+							"\r",
+							"pm.test(\"Зверушка создана\", pm.expect(jsonData.name).to.eql(pm.environment.get('PetName')));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\":  \"{{$randomNamePrefix}} {{$randomFirstName}}\",\r\n    \"photoUrls\": [\r\n        \"nulla cupidatat\",\r\n        \"aute ut mollit\"\r\n    ],\r\n    \"id\": 10000{{$randomInt}},\r\n    \"category\": {\r\n        \"id\": 54684615,\r\n        \"name\": \"sunt\"\r\n    },\r\n    \"tags\": [\r\n        {\r\n            \"id\": -60277989,\r\n            \"name\": \"enim eiusmod\"\r\n        },\r\n        {\r\n            \"id\": 6845035,\r\n            \"name\": \"labore velit mollit ullamco\"\r\n        }\r\n    ],\r\n    \"status\": \"pending\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"postman.setNextRequest('Update pet');\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Серверный заголовок присутствует\", function () { pm.response.to.have.header(\"Server\"); });\r",
+							"pm.test(\"Заголовок соединения присутствует\", function () { pm.response.to.have.header(\"Connection\"); });\r",
+							"pm.test(\"Заголовок даты присутствует\", function () { pm.response.to.have.header(\"Date\"); });\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Зверушка найдена\", pm.expect(jsonData.name).to.eql(pm.environment.get('PetName')));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{PetId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{PetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Update pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"var jsonData = pm.response.json();\r",
+							"pm.environment.set(\"PetName\", jsonData.name);\r",
+							"\r",
+							"//console.log (jsonData.id);\r",
+							"\r",
+							"postman.setNextRequest('Delete pet');\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Серверный заголовок присутствует\", function () { pm.response.to.have.header(\"Server\"); });\r",
+							"pm.test(\"Заголовок соединения присутствует\", function () { pm.response.to.have.header(\"Connection\"); });\r",
+							"pm.test(\"Заголовок даты присутствует\", function () { pm.response.to.have.header(\"Date\"); });\r",
+							"\r",
+							"pm.test(\"Бублик все\", pm.expect(jsonData.status).to.eql(\"eaten\"));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"name\": \"Бублик\",\r\n    \"photoUrls\": [\r\n        \"irure aute sed\",\r\n        \"ex anim cillum quis\"\r\n    ],\r\n    \"id\": {{PetId}},\r\n    \"category\": {\r\n        \"id\": {{PetId}},\r\n        \"name\": \"minim\"\r\n    },\r\n    \"tags\": [\r\n        {\r\n            \"id\": 65273725,\r\n            \"name\": \"do officia exercitation nulla minim\"\r\n        },\r\n        {\r\n            \"id\": 2431761,\r\n            \"name\": \"ipsum deserunt aute dolor\"\r\n        }\r\n    ],\r\n    \"status\": \"eaten\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/pet",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Delete pet",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"postman.setNextRequest('Find pet false');\r",
+							"\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Серверный заголовок присутствует\", function () { pm.response.to.have.header(\"Server\"); });\r",
+							"pm.test(\"Заголовок соединения присутствует\", function () { pm.response.to.have.header(\"Connection\"); });\r",
+							"pm.test(\"Заголовок даты присутствует\", function () { pm.response.to.have.header(\"Date\"); });\r",
+							"\r",
+							"var jsonData = pm.response.json();\r",
+							"pm.test(\"Зверушка удалена\", pm.expect(parseInt(jsonData.message)).to.eql(pm.environment.get('PetId')));"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{PetId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{PetId}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Find pet false",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"postman.setNextRequest(null);\r",
+							"\r",
+							"\r",
+							"pm.test(\"статус 404, зверушки нет\", function () {\r",
+							"    pm.response.to.have.status(404);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Response time is less than 400ms\", function () {\r",
+							"    pm.expect(pm.response.responseTime).to.be.below(400);\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Серверный заголовок присутствует\", function () { pm.response.to.have.header(\"Server\"); });\r",
+							"pm.test(\"Заголовок соединения присутствует\", function () { pm.response.to.have.header(\"Connection\"); });\r",
+							"pm.test(\"Заголовок даты присутствует\", function () { pm.response.to.have.header(\"Date\"); });\r",
+							"\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{baseUrl}}/pet/{{PetId}}",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"pet",
+						"{{PetId}}"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://petstore.swagger.io/v2"
+		}
+	]
+}
